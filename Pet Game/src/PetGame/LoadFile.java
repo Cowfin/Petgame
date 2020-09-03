@@ -15,26 +15,31 @@ public class LoadFile {
     public Player load(String file) {
         FileInputStream fin;
 
-        String player = null, name = null;
+        String player = "", name = "";
         double money = -1, age = -1, health = -1, hunger = -1, happiness = -1,
                 energy = -1, hungerDecay = -1, happinessDecay = -1, energyDecay = -1;
+        boolean isAlive = false;
 
         try {
             fin = new FileInputStream(file);
             scan = new Scanner(fin);
 
             while (scan.hasNextLine()) {
-                String line = scan.next().toUpperCase();
+                String line = scan.nextLine().toUpperCase();
                 String[] str = line.split("\\s+");
                 switch (str[0]) {
                     case ("PLAYER"):
-                        player = str[1];
+                        for (int i = 1; i < str.length; i++) {
+                            player += str[i] + " ";
+                        }
                         break;
                     case ("MONEY"):
                         money = Double.parseDouble(str[1]);
                         break;
                     case ("NAME"):
-                        name = str[1];
+                        for (int i = 1; i < str.length; i++) {
+                            name += str[i] + " ";
+                        }
                         break;
                     case ("AGE"):
                         age = Double.parseDouble(str[1]);
@@ -60,16 +65,19 @@ public class LoadFile {
                     case ("ENERGYDECAY"):
                         energyDecay = Double.parseDouble(str[1]);
                         break;
+                    case ("ALIVE"):
+                        isAlive = Boolean.parseBoolean(str[1]);
+                        break;
                 }
             }
         } catch (FileNotFoundException e) {
             scan = new Scanner("");
         }
-        if (player == null || name == null || money == -1 || age == -1 || hunger == -1 || energy == -1
+        if (player.equals("") || name.equals("") || money == -1 || age == -1 || hunger == -1 || energy == -1
                 || health == -1 || happiness == -1 || hungerDecay == -1 || energyDecay == -1 || happinessDecay == -1) {
             return null;
         } else {
-            Pet pet = new Pet(name, hungerDecay, energyDecay, happinessDecay, age, hunger, energy, health, happiness);
+            Pet pet = new Pet(name, hungerDecay, energyDecay, happinessDecay, age, hunger, energy, health, happiness, isAlive);
             Player pl = new Player(player, money, pet);
             return pl;
         }

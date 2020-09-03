@@ -26,7 +26,7 @@ public class Food {
 
     @Override
     public String toString() {
-        return ("Food Name: " + this.name + "\nPrice of Food Item: " + this.price + "\nFills: " + this.hungerGain + "\nHeals: " + this.heal + "\nDescription: " + this.description);
+        return ("Food Name: " + this.name + " Price of Food Item: " + this.price + " Fills: " + this.hungerGain + " Heals: " + this.heal + " Description: " + this.description);
     }
 
     /**

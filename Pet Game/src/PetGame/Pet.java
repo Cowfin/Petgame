@@ -12,8 +12,7 @@ public class Pet {
     private double energyLevel;
     private double healthLevel;
     private double happinessLevel;
-
-    private int tickCounter = 0;
+    private boolean isAlive;
 
     // New pet
     public Pet(String name) {
@@ -23,13 +22,14 @@ public class Pet {
         this.healthLevel = 100;
         this.happinessLevel = 100;
         this.age = 0;
-        this.energyDecay = 1;
-        this.happinessDecay = 2;
-        this.hungerDecay = 3;
+        this.energyDecay = 0.25;
+        this.happinessDecay = 0.15;
+        this.hungerDecay = 0.5;
+        this.isAlive = true;
     }
 
     // Load pet
-    public Pet(String name, double hungerDecay, double energyDecay, double happinessDecay, double age, double hungerLevel, double energyLevel, double healthLevel, double happinessLevel) {
+    public Pet(String name, double hungerDecay, double energyDecay, double happinessDecay, double age, double hungerLevel, double energyLevel, double healthLevel, double happinessLevel, boolean isAlive) {
         this.name = name;
         this.energyDecay = energyDecay;
         this.hungerDecay = hungerDecay;
@@ -39,16 +39,17 @@ public class Pet {
         this.energyLevel = energyLevel;
         this.healthLevel = healthLevel;
         this.happinessLevel = happinessLevel;
+        this.isAlive = isAlive;
     }
 
     //Feed the pet
     public void Feed(Food food) {
         this.healthLevel += food.getHeal();
         this.hungerLevel += food.getHunger();
-        if (this.getHungerLevel() > 100) {
+        if (this.hungerLevel >= 100) {
             this.hungerLevel = 100;
         }
-        if (this.getHealthLevel() > 100) {
+        if (this.healthLevel >= 100) {
             this.healthLevel = 100;
         }
     }
@@ -57,35 +58,43 @@ public class Pet {
     public void Play(Toys toy) {
         this.happinessLevel += toy.getHappinessGain();
         this.energyLevel -= toy.getEnergyConsumption();
+        if (this.energyLevel >= 100) {
+            this.energyLevel = 100;
+        }
+        if (this.happinessLevel >= 100) {
+            this.happinessLevel = 100;
+        }
     }
 
     public void Rest() {
         this.energyLevel += 60;
         this.happinessLevel += 10;
         this.healthLevel += 10;
-        if (this.getEnergyLevel() > 100) {
+        if (this.energyLevel >= 100) {
             this.energyLevel = 100;
         }
-        if (this.getHappinessLevel() > 100) {
+        if (this.happinessLevel >= 100) {
             this.happinessLevel = 100;
         }
-        if (this.getHealthLevel() > 100) {
+        if (this.healthLevel >= 100) {
             this.healthLevel = 100;
         }
     }
 
-    public void gametick() {
-        this.hungerLevel -= this.getHungerDecay();
-        this.energyLevel -= this.getEnergyDecay();
-        this.happinessLevel -= this.getHappinessDecay();
-        if (this.tickCounter > 12) {
-            this.age++;
-            this.tickCounter = 0;
-        }
-        if (this.getHungerLevel() < 10) {
+    synchronized public void gametick() {
+        this.hungerLevel -= this.hungerDecay;
+        this.energyLevel -= this.energyDecay;
+        this.happinessLevel -= this.happinessDecay;
+        this.happinessLevel = Math.round(this.happinessLevel * 100.0) / 100.0;
+        this.age += 0.1;
+        this.age = Math.round(this.age * 100.0) / 100.0;
+        if ((this.getHungerLevel()) < 10 || (this.getEnergyLevel() < 10) || (this.getHappinessLevel() < 10)) {
             this.healthLevel -= 5;
         }
-        this.tickCounter++;
+
+        if (this.healthLevel == 0) {
+            this.isAlive = false;
+        }
     }
 
     /**
@@ -170,5 +179,9 @@ public class Pet {
      */
     public double getHappinessDecay() {
         return happinessDecay;
+    }
+
+    public boolean getIsAlive() {
+        return isAlive;
     }
 }

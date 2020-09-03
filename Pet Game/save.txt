@@ -1,0 +1,11 @@
+Player KELVIN WONG 
+Money 77.0
+Name PET BOI LOAD 
+Age 0.0
+Health 100.0
+Hunger 99.0
+Happiness 114.7
+Energy 84.5
+HungerDecay 0.5
+HappinessDecay 0.15
+EnergyDecay 0.25

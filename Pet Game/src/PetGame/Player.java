@@ -27,18 +27,31 @@ public class Player {
 
         String name = "";
         Boolean confirm = true;
+        Boolean confirm2 = true;
 
         while (confirm) {
             System.out.println("Enter a pet name: ");
+            scan.next();
             name = scan.nextLine();
-            System.out.println("Pet name: " + name + "\nConfirm? (Y/N)");
-            char conf = scan.next().toUpperCase().charAt(0);
-            if (conf == 'Y') {
-                confirm = false;
+            while (confirm2) {
+                System.out.println("Pet name: " + name + "\nConfirm? (Y/N)");
+                char conf = scan.next().toUpperCase().charAt(0);
+                if (conf == 'Y') {
+                    confirm = false;
+                    confirm2 = false;
+                } else if (conf == 'N') {
+                    confirm2 = false;
+                }
             }
+            confirm2 = true;
         }
         Pet pet = new Pet(name);
         return pet;
+    }
+
+    public void gametick() {
+        pet.gametick();
+        this.money += 1;
     }
 
     public void feed(Food food) {

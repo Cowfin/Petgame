@@ -26,7 +26,7 @@ public class Toys {
 
     @Override
     public String toString() {
-        return ("Toy Name: " + this.name + "\nPrice: " + this.price + "\nHappiness Gain: " + this.happinessGain + "\nEnergy Consumption: " + this.energyConsumption + "\nDescription: " + this.description);
+        return ("Toy Name: " + this.name + " Price: " + this.price + " Happiness Gain: " + this.happinessGain + " Energy Consumption: " + this.energyConsumption + " Description: " + this.description);
     }
 
     /**
